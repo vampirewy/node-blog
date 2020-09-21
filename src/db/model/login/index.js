@@ -1,12 +1,11 @@
 /*
  * @Author: wy
  * @LastEditors: Please set LastEditors
- * @Description: 登录model
+ * @Description:
  */
-const mongoose = require("mongoose");
-const { Schema } = require("mongoose");
+import mongoose, { Schema } from "mongoose";
 const UserSchema = new Schema({
   name: String,
 });
 const User = mongoose.model("User", UserSchema);
-module.exports = User;
+export default User;

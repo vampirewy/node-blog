@@ -5,22 +5,32 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "supervisor src/app.js"
+    "serve:build": "gulp",
+    "start:dev": "cross-env NODE_ENV=dev supervisor ./dist/app.js",
+    "serve:pro": "cross-env NODE_ENV=production gulp"
   },
   "author": "matser",
   "license": "ISC",
   "dependencies": {
     "@babel/register": "^7.11.5",
+    "core-js": "^3.6.5",
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^9.4.0",
+    "lodash": "^4.17.20",
     "mongodb": "^3.6.2",
-    "mongoose": "^5.10.6"
+    "mongoose": "^5.10.6",
+    "regenerator-runtime": "^0.13.7"
   },
   "devDependencies": {
     "@babel/cli": "^7.11.6",
     "@babel/core": "^7.11.6",
     "@babel/preset-env": "^7.11.5",
+    "cross-env": "^7.0.2",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-eslint": "^6.0.0",
+    "gulp-watch": "^5.0.1",
     "supervisor": "^0.12.0"
   }
 }
