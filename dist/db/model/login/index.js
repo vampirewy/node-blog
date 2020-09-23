@@ -19,7 +19,10 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
  * @Description:
  */
 var UserSchema = new _mongoose.Schema({
-  name: String
+  name: {
+    type: String,
+    "default": ""
+  }
 });
 
 var User = _mongoose["default"].model("User", UserSchema);

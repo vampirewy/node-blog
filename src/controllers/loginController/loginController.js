@@ -9,12 +9,9 @@ export default class LoginController {
   loginAction() {
     return async (ctx) => {
       const loginModel = new LoginModel();
-      const result = await loginModel.getData();
-      ctx.response.body = {
-        code: 200,
-        data: result,
-        msg: "",
-      };
+      let [phone, pwd] = [ctx.request.body.phone, ctx.request.body.pwd];
+      const result = await loginModel.checkAccountRequest(phone, pwd);
+      ctx.response.body = result;
     };
   }
 }

@@ -5,7 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _login = _interopRequireDefault(require("../../db/model/login"));
+var _RegiserInfor = _interopRequireDefault(require("../../db/model/RegiserInfor"));
+
+var _responseClient = require("../../utils/responseClient");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -19,33 +21,51 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-// let user = {
-//   name: "王小丫",
-// };
-// const newUser = new User(user);
-// newUser.save();
 var LoginModel = /*#__PURE__*/function () {
   function LoginModel() {
     _classCallCheck(this, LoginModel);
   }
 
   _createClass(LoginModel, [{
-    key: "getData",
+    key: "checkAccountRequest",
     value: function () {
-      var _getData = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var data;
+      var _checkAccountRequest = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(phone, pwd) {
+        var data, _responseResult, _responseResult2, responseResult;
+
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _login["default"].find();
+                return _RegiserInfor["default"].find({
+                  phone: phone
+                });
 
               case 2:
                 data = _context.sent;
-                return _context.abrupt("return", data);
 
-              case 4:
+                if (data.length) {
+                  _context.next = 6;
+                  break;
+                }
+
+                _responseResult = (0, _responseClient.responseClient)(_responseClient.STATUS_CODE.errorCode, "", "对不起，请先注册帐号~");
+                return _context.abrupt("return", _responseResult);
+
+              case 6:
+                if (!(data[0].phone === phone && data[0].pwd === pwd)) {
+                  _context.next = 9;
+                  break;
+                }
+
+                _responseResult2 = (0, _responseClient.responseClient)(_responseClient.STATUS_CODE.successCode, "", "登录成功");
+                return _context.abrupt("return", _responseResult2);
+
+              case 9:
+                responseResult = (0, _responseClient.responseClient)(_responseClient.STATUS_CODE.errorCode, "", "对不起，登录帐号或密码输入有误~");
+                return _context.abrupt("return", responseResult);
+
+              case 11:
               case "end":
                 return _context.stop();
             }
@@ -53,11 +73,11 @@ var LoginModel = /*#__PURE__*/function () {
         }, _callee);
       }));
 
-      function getData() {
-        return _getData.apply(this, arguments);
+      function checkAccountRequest(_x, _x2) {
+        return _checkAccountRequest.apply(this, arguments);
       }
 
-      return getData;
+      return checkAccountRequest;
     }()
   }]);
 

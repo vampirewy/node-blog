@@ -5,7 +5,15 @@
  */
 import Router from "koa-router";
 import LoginController from "./loginController/loginController";
-const router = new Router();
+import RegiserController from "./registerController/registerController";
+import ForgetPwdController from './forgetPwdController/forgetPwdController';
+const router = new Router({
+  prefix: "/api",
+});
 const LoginControl = new LoginController();
-router.get("/", LoginControl.loginAction());
+const RegiserControl = new RegiserController();
+const ForgetControl = new ForgetPwdController();
+router.post("/login", LoginControl.loginAction());
+router.post("/regiser", RegiserControl.regiserAction());
+router.put("/resetpwd",ForgetControl.retsetPwdAction());
 export default router;
