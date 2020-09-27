@@ -5,12 +5,16 @@
  */
 import "core-js/stable";
 import "regenerator-runtime/runtime";
-require("./db/config/mongo");
-const Koa = require("koa");
+import "./db/config/mongo";
+import Koa from "koa";
+import koaJwt from "koa-jwt";
 import config from "./config";
-const bodyParser = require("koa-bodyparser");
-import router from "./controllers/index";
+import bodyParser from "koa-bodyparser";
+import { protectedRouter, unprotectedRouter } from "./controllers/index";
+import errorHandle from "./middleware/errorHandle";
+import validationToken from "./middleware/validationToken";
 const app = new Koa();
+errorHandle.error(app);
 app.use(bodyParser());
 app.use(async (ctx, next) => {
   // console.log(ctx.request.header);
@@ -21,7 +25,7 @@ app.use(async (ctx, next) => {
   // 设置所允许的HTTP请求方法
   ctx.set("Access-Control-Allow-Methods", "OPTIONS, GET, PUT, POST, DELETE");
   // 字段是必需的。它也是一个逗号分隔的字符串，表明服务器支持的所有头信息字段.
-  ctx.set("Access-Control-Allow-Headers", "x-requested-with, accept, origin, content-type,token");
+  ctx.set("Access-Control-Allow-Headers", "x-requested-with, accept, origin, content-type, Authorization");
   // 服务器收到请求以后，检查了Origin、Access-Control-Request-Method和Access-Control-Request-Headers字段以后，确认允许跨源请求，就可以做出回应。
   // Content-Type表示具体请求中的媒体类型信息
   ctx.set("Content-Type", "application/json;charset=utf-8");
@@ -42,10 +46,21 @@ app.use(async (ctx, next) => {
       Pragma。
   */
   // 需要获取其他字段时，使用Access-Control-Expose-Headers，
-  // getResponseHeader('myData')可以返回我们所需的值
-  // ctx.set("Access-Control-Expose-Headers", "myData");
-
-  await next();
+  // getResponseHeader('Authorization')
+  ctx.set("Access-Control-Expose-Headers", "Authorization");
+  //因为需要权鉴验证，所以需要解决options请求，因为options请求不会发送Authorization，所以会报401错误
+  if (ctx.request.method === "OPTIONS") {
+    ctx.status = 200;
+  } else {
+    await next();
+  }
 });
-app.use(router.routes()).use(router.allowedMethods());
+app.use(unprotectedRouter.routes()).use(unprotectedRouter.allowedMethods());
+app.use(
+  koaJwt({
+    secret: config.secret,
+  }).unless({ path: [/\/register/, /\/login/, /\/resetpwd/,/\/loginout/] }),
+);
+validationToken.validation(app);
+app.use(protectedRouter.routes()).use(protectedRouter.allowedMethods());
 app.listen(config.port, console.log(`服务启动于${config.port}端口`));

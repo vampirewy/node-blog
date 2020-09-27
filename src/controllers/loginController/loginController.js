@@ -5,13 +5,19 @@
  */
 import LoginModel from "../../model/loginModel/loginModel";
 export default class LoginController {
-  constructor() {}
-  loginAction() {
-    return async (ctx) => {
+  loginInAction() {
+    return async ctx => {
       const loginModel = new LoginModel();
       let [phone, pwd] = [ctx.request.body.phone, ctx.request.body.pwd];
-      const result = await loginModel.checkAccountRequest(phone, pwd);
-      ctx.response.body = result;
+      const responseResult = await loginModel.checkAccountRequest(phone, pwd);
+      ctx.response.body = responseResult;
+    };
+  }
+  loginOutAction() {
+    return async ctx => {
+      const loginModel = new LoginModel();
+      const responseResult = await loginModel.outRequest(ctx.request.header.authorization.replace(/Bearer /, ""));
+      ctx.response.body = responseResult;
     };
   }
 }

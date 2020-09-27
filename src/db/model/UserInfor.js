@@ -5,16 +5,15 @@
  */
 import mongoose, { Schema } from "mongoose";
 const UserInforSchema = new Schema({
-  phone: String,
-  nikeName: String,
+  headerImg: { type: String, default: "" },
+  phone: { type: String, required: true },
+  nikeName: { type: String, default: "" },
   sex: Number,
   birth: { type: String, default: "" },
   bloodType: Number,
-  job: String,
+  job: { type: String, default: "" },
   relationShip: Number,
-  city: String,
-  province: String,
-  remarks: String,
+  remarks: { type: String, default: "" },
 });
 const UserInfor = mongoose.model("UserInfor", UserInforSchema);
 export default UserInfor;

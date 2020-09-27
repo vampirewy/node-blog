@@ -6,9 +6,10 @@
 import RegiserModel from "../../model/registerModel/registerModel";
 class RegiserController {
   regiserAction() {
-    return async (ctx) => {
+    return async ctx => {
+      let [phone, pwd] = [ctx.request.body.phone, ctx.request.body.pwd];
       let regiserModel = new RegiserModel();
-      const result = await regiserModel.sendRegiserRequest(ctx.request.body);
+      const result = await regiserModel.sendRegiserRequest(phone, pwd);
       ctx.response.body = result;
     };
   }

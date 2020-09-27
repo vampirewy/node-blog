@@ -8,9 +8,15 @@ let forgetPwdModel = new ForgetPwdModel();
 class ForgetPwdController {
   constructor() {}
   retsetPwdAction() {
-    return async (ctx) => {
-      let [phone, originalPwd, pwd] = [ctx.request.body.phone, ctx.request.body.originalPwd, ctx.request.body.pwd];
-      await forgetPwdModel.sendResetPwdRequest(phone, originalPwd, pwd);
+    return async ctx => {
+      let [phone, originalPwd, pwd, rePwd] = [
+        ctx.request.body.phone,
+        ctx.request.body.originalPwd,
+        ctx.request.body.pwd,
+        ctx.request.body.rePwd,
+      ];
+      const responseResult = await forgetPwdModel.sendResetPwdRequest(phone, originalPwd, pwd, rePwd);
+      ctx.response.body = responseResult;
     };
   }
 }
