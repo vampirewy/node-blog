@@ -1,5 +1,6 @@
 const gulp = require("gulp");
 const { src, dest, series } = require("gulp");
+const clean = require("gulp-clean");
 const babel = require("gulp-babel");
 const watch = require("gulp-watch");
 const eslint = require("gulp-eslint");
@@ -28,9 +29,12 @@ function prod() {
 function lint() {
   return src("src/**/*.js").pipe(eslint()).pipe(eslint.format()).pipe(eslint.failAfterError());
 }
+function cleanDoc() {
+  return gulp.src("dist/", { read: false }).pipe(clean());
+}
 if (process.env.NODE_ENV === "production") {
-  exports.default = series(lint, prod);
-  return gulp.task(series(lint, prod));
+  exports.default = series(cleanDoc, lint, prod);
+  return gulp.task(series(cleanDoc, lint, prod));
 }
 if (process.env.NODE_ENV === "lint") {
   exports.default = lint;
