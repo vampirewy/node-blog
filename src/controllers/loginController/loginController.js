@@ -13,11 +13,11 @@ export default class LoginController {
       ctx.response.body = responseResult;
     };
   }
-  loginOutAction() {
-    return async ctx => {
-      const loginModel = new LoginModel();
-      const responseResult = await loginModel.outRequest(ctx.request.header.authorization.replace(/Bearer /, ""));
-      ctx.response.body = responseResult;
-    };
-  }
+  // loginOutAction() {
+  //   return async ctx => {
+  //     const loginModel = new LoginModel();
+  //     const responseResult = await loginModel.outRequest(ctx.request.header.authorization.replace(/Bearer /, ""));
+  //     ctx.response.body = responseResult;
+  //   };
+  // }
 }

@@ -19,6 +19,5 @@ export const unprotectedRouter = new Router({
   prefix: "/api",
 });
 unprotectedRouter.post("/login", LoginControl.loginInAction());
-unprotectedRouter.post("/loginout", LoginControl.loginOutAction());
-unprotectedRouter.post("/register", RegiserControl.regiserAction());
+protectedRouter.post("/register", RegiserControl.regiserAction());
 unprotectedRouter.put("/resetpwd", ForgetControl.retsetPwdAction());

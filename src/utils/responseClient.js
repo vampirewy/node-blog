@@ -6,6 +6,7 @@
 export const STATUS_CODE = {
   successCode: 200,
   errorCode: 500,
+  tokenExpire: 401,
 };
 export function responseClient(code, data, msg = "") {
   let responseResult = {

@@ -8,9 +8,6 @@ const RegiserInforSchema = new Schema({
   phone: { type: String, required: true },
   pwd: { type: String, required: true },
   createTime: { type: Date, default: Date.now },
-  authorization: { type: String, default: "" },
-  loginOutTime: Date,
-  loginInTime: Date,
 });
 const RegiserInfor = mongoose.model("RegiserInfor", RegiserInforSchema);
 export default RegiserInfor;

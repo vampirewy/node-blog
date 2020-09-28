@@ -6,6 +6,7 @@
 import jwt from "jsonwebtoken";
 import config from "../config/index";
 import generateToken from "../middleware/generateToken";
+import { responseClient, STATUS_CODE } from "../utils/responseClient";
 import AccountModel from "../model/accountModel/accountModel";
 const validationToken = {
   validation(app) {
@@ -16,16 +17,18 @@ const validationToken = {
         const token = authorization[1];
         if (/^Bearer$/i.test(scheme)) {
           try {
-            jwt.verify(token, config.secret, {
+            const { payload } = jwt.verify(token, config.secret, {
               complete: true,
             });
+            //过期时间小于15分钟，生成新token
+            if (payload.exp - Date.now() / 1000 <= 900) {
+              const newToken = generateToken(payload.phone, payload.currentId);
+              await new AccountModel().updateToken(payload.phone, payload.currentId);
+              ctx.response.set("Authorization", newToken);
+            }
           } catch (e) {
             console.log("e", e.message);
-            let accountModel = new AccountModel();
-            const { phone, _id } = await accountModel.getAuthorization(token);
-            const newToken = generateToken(phone, _id);
-            const updateResult = await accountModel.updateToken(phone, newToken);
-            updateResult && ctx.response.set("Authorization", newToken);
+            return (ctx.response.body = responseClient(STATUS_CODE.tokenExpire, "", "token过期，请重新登录"));
           }
         }
       }
