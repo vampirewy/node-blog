@@ -1,7 +1,7 @@
 /*
  * @Author: wy
  * @LastEditors: Please set LastEditors
- * @Description: 登录路由
+ * @Description: 登录Control
  */
 import LoginModel from "../../model/loginModel/loginModel";
 export default class LoginController {

@@ -45,11 +45,37 @@ class AccountModel {
     return updateResult;
   }
   //查询用户信息
-  async searchUserInfor(phone) {
-    const searchUserInforResult = await UserInfor.findOne({
-      phone: phone,
-    });
-    return searchUserInforResult;
+  async searchUserInfor(phone, authorization) {
+    if (phone) {
+      const searchUserInforResult = await UserInfor.findOne(
+        {
+          phone: phone,
+        },
+        { authorization: 0, updateTime: 0, __v: 0, createTime: 0 },
+      );
+      return searchUserInforResult;
+    }
+    if (authorization) {
+      const searchUserInforResult = await UserInfor.findOne(
+        {
+          authorization: authorization,
+        },
+        { authorization: 0, updateTime: 0, __v: 0, createTime: 0 },
+      );
+      return searchUserInforResult;
+    }
+  }
+  //更新用户信息
+  async updatePersonalInfor(params) {
+    const updatePersonalResult = await UserInfor.updateOne(
+      {
+        _id: params.id,
+      },
+      {
+        $set: params,
+      },
+    );
+    return updatePersonalResult;
   }
 }
 export default AccountModel;

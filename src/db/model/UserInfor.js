@@ -5,7 +5,7 @@
  */
 import mongoose, { Schema } from "mongoose";
 const UserInforSchema = new Schema({
-  headerImg: { type: String, default: "" },
+  headerImg: { type: String, default: "http://m.imeitou.com/uploads/allimg/2019022710/ayk4dr5gkvi.jpg" },
   authorization: { type: String, default: "" },
   phone: { type: String, required: true },
   nickName: { type: String, default: "" },

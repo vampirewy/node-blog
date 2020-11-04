@@ -1,7 +1,7 @@
 /*
  * @Author: wy
  * @LastEditors: Please set LastEditors
- * @Description:
+ * @Description: 注册
  */
 import RegiserModel from "../../model/registerModel/registerModel";
 class RegiserController {
